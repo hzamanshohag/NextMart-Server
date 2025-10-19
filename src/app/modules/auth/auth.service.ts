@@ -45,13 +45,13 @@ const loginUser = async (payload: IAuth) => {
       const accessToken = createToken(
          jwtPayload,
          config.jwt_access_secret as string,
-         config.jwt_access_expires_in as string
+         config.jwt_access_expires_in as any
       );
 
       const refreshToken = createToken(
          jwtPayload,
          config.jwt_refresh_secret as string,
-         config.jwt_refresh_expires_in as string
+         config.jwt_refresh_expires_in as any
       );
 
       const updateUserInfo = await User.findByIdAndUpdate(
@@ -110,7 +110,7 @@ const refreshToken = async (token: string) => {
    const newAccessToken = createToken(
       jwtPayload,
       config.jwt_access_secret as Secret,
-      config.jwt_access_expires_in as string
+      config.jwt_access_expires_in as any
    );
 
    return {
@@ -223,9 +223,11 @@ const verifyOTP = async (
    user.otpToken = null;
    await user.save();
 
-   const resetToken = jwt.sign({ email }, config.jwt_pass_reset_secret as string, {
-      expiresIn: config.jwt_pass_reset_expires_in,
-   });
+   const resetToken = jwt.sign(
+      { email },
+      config.jwt_pass_reset_secret as Secret,
+      { expiresIn: config.jwt_pass_reset_expires_in ?? '15m' } as jwt.SignOptions
+   );
 
    // Return the reset token
    return {
