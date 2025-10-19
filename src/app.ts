@@ -45,8 +45,8 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
       )} minutes`,
     },
     developerContact: {
-      email: "fahimfiroz.ph@gmail.com",
-      website: "https://programming-hero.com",
+      email: "hzaman.live@gmail.com",
+      website: "https://hzaman.netlify.app",
     },
   });
 });
